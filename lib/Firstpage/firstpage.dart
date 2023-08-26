@@ -18,22 +18,25 @@ class firstpage extends StatelessWidget {
                  SizedBox(
                    height: 70,
                  ),
+
+
                   Text("Enjoy the best restuarants or get what you need from neadby stores, delivered",
-                  style: GoogleFonts.poppins(
-                      fontSize: 30,
+                  style: GoogleFonts.cabin(
+                      fontSize: 36,
                   ),textAlign: TextAlign.center,
                 ),
-                
+
 
                 SizedBox(
-                  height: 90,
+                  height: 40,
                 ),
 
                 SvgPicture.asset("assets/F.svg"),
 
                 SizedBox(
-                  height: 20,
+                  height: 40,
                 ),
+
 
                 ElevatedButton(
                   onPressed: (){
@@ -44,7 +47,9 @@ class firstpage extends StatelessWidget {
                   },
                   child:  Text("Get Started"),
                   style: ElevatedButton.styleFrom(
-                    shape: StadiumBorder(),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12)
+                    ),
                     fixedSize: Size(358, 55),
                     backgroundColor: Color(0xffFE724C)
                   ) ,
