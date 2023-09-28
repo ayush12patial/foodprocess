@@ -10,15 +10,18 @@ class firstpage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+
       body: Center(
           child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                SvgPicture.asset("assets/R.svg"),
                  SizedBox(
-                   height: 70,
+                   height: 60,
                  ),
 
+                SvgPicture.asset("assets/R.svg"),
+
+                  SizedBox(height: 70,),
 
                   Text("Enjoy the best restuarants or get what you need from neadby stores, delivered",
                   style: GoogleFonts.cabin(
@@ -26,16 +29,13 @@ class firstpage extends StatelessWidget {
                   ),textAlign: TextAlign.center,
                 ),
 
+                SizedBox(height: 40,),
 
-                SizedBox(
-                  height: 40,
-                ),
 
                 SvgPicture.asset("assets/F.svg"),
 
-                SizedBox(
-                  height: 40,
-                ),
+                SizedBox(height: 40,),
+
 
 
                 ElevatedButton(
@@ -56,9 +56,6 @@ class firstpage extends StatelessWidget {
                 )
               ]
           )
-
-
-
       ),
     );
   }

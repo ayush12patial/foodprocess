@@ -1,8 +1,15 @@
+
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:foodorderprocess/Firstpage/thirdpage.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:google_sign_in/google_sign_in.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 
 
@@ -15,6 +22,13 @@ class secondpage extends StatefulWidget {
 }
 
 class _secondpageState extends State<secondpage> {
+  var username = TextEditingController();
+  var userpassword = TextEditingController();
+  final FirebaseAuth auth = FirebaseAuth.instance;
+
+
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -31,21 +45,19 @@ class _secondpageState extends State<secondpage> {
                // mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Container(
-
-                    padding: EdgeInsets.only(left: 240),
-                    height: 150,
-                      width: 500,
                     color: Color(0xffFFD7CC),
+                    child: Stack(
+                      children: [
+                        Container(
+                          alignment: Alignment.topRight,
+                          child: Image.asset('assets/rechangeimg.png'),
+                        ),
 
-                    child: SvgPicture.asset('assets/dipizza.svg',
-
+                      ],
 
                     ),
+
                   ),
-
-
-
-
 
                   Container(
                     padding: EdgeInsets.only(left: 25,right: 25),
@@ -84,27 +96,14 @@ class _secondpageState extends State<secondpage> {
                         ),
 
                         Container(
-
-
-
-
-
                           child:
-
-
                           Row(
-
                             mainAxisAlignment: MainAxisAlignment.end,
-
-
-
                             children: [
-
                               ElevatedButton.icon(
 
 
-                                label: Text('', textAlign: TextAlign.center
-                                ),
+                                label: Text('', textAlign: TextAlign.center),
 
 
                                 icon: Padding(
@@ -117,12 +116,7 @@ class _secondpageState extends State<secondpage> {
                                 style: ElevatedButton.styleFrom(
                                   shape: CircleBorder(),
                                     backgroundColor: Color(0xFFD9D9D9), foregroundColor: Colors.white),
-
-
-
                               ),]
-
-
                         ),
                         ),
 
@@ -148,7 +142,9 @@ class _secondpageState extends State<secondpage> {
                                     color: Colors.grey,
                                   ),),
 
-                                  TextButton(onPressed: (){}, child:
+                                  TextButton(onPressed: (){
+                                    Navigator.pushNamed(context, '8');
+                                  }, child:
 
                                       Text("Signup Now", style:
                                       TextStyle(
@@ -178,6 +174,7 @@ class _secondpageState extends State<secondpage> {
                           width: 358,
 
                           child: TextField(
+                            controller: username ,
                             decoration: InputDecoration(
 
                               border: OutlineInputBorder(
@@ -199,6 +196,7 @@ class _secondpageState extends State<secondpage> {
                           width: 358,
 
                           child: TextField(
+                            controller: userpassword,
                             decoration: InputDecoration(
                               border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(12),
@@ -231,7 +229,6 @@ class _secondpageState extends State<secondpage> {
                                   child: Text("Forget Paswword?",style: TextStyle(
                                       color: Colors.black
                                   ),
-
                                 )
                                 ),
                             )
@@ -244,8 +241,43 @@ class _secondpageState extends State<secondpage> {
                         ),
 
                         ElevatedButton(
-                          onPressed: (){
-                            Navigator.pushNamed(context, '3');
+                          onPressed: () async{
+
+                            SharedPreferences prefs = await SharedPreferences.getInstance();
+
+                            var  value = prefs.getString('signemail');
+                            var value2 = prefs.getString('signpassword');
+
+                            if(username.text.isEmpty  ) {
+                              Fluttertoast.showToast(
+                                  msg: 'Please fill email field', backgroundColor: Colors.white,textColor: Colors.black);
+                            }
+                            else  if(!username.text.contains('@')){
+                              Fluttertoast.showToast(msg: 'Your email format is not valid', backgroundColor: Colors.white,textColor: Colors.black);
+                            }
+                            else  if(!username.text.contains('.')){
+                              Fluttertoast.showToast(msg: 'Your email format is not valid', backgroundColor: Colors.white,textColor: Colors.black);
+                            }
+
+                              else if(username.text != value){
+                                Fluttertoast.showToast(msg: 'Your email is not sign-in', backgroundColor: Colors.white,textColor: Colors.black);
+                              }
+
+                              else if(userpassword.text.isEmpty){
+                                Fluttertoast.showToast(msg: 'Please fill password field', backgroundColor: Colors.white,textColor: Colors.black);
+                              }
+                              else if(userpassword.text != value2){
+                                Fluttertoast.showToast(msg: 'Your password is incorrect', backgroundColor: Colors.white,textColor: Colors.black);
+                            }
+
+
+                            else{
+                              Fluttertoast.showToast(msg: 'WELCOME');
+
+                              Navigator.pushNamed(context, '3');
+                            }
+
+
                           },
                           child:  Text("Log In"),
                           style: ElevatedButton.styleFrom(
@@ -325,7 +357,39 @@ class _secondpageState extends State<secondpage> {
 
 
                         ElevatedButton(
-                          onPressed: (){},
+                          onPressed: () async{
+
+                            try {
+
+                              print('Ankit');
+
+                              final userCredential =  await signInWithGoogle();
+
+                              print('Ankit'+userCredential.toString());
+
+
+                              if (userCredential != null) {
+                                // Sign-in with Google was successful, navigate to the next page here.
+                                Navigator.pushNamed(context, '3');
+
+                                Fluttertoast.showToast(msg: "Welcome");
+
+
+                                // Ensure '3' is a valid route name.
+                                Fluttertoast.showToast(msg: 'Welcome.');
+
+                              } else {
+                                // Handle the case where sign-in with Google failed.
+                                // You might want to show an error message to the user.
+
+                                Fluttertoast.showToast(msg: 'Sign-in with Google failed.');
+                              }
+                            } catch (e) {
+
+                            }
+//
+
+                          },
 
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
@@ -409,3 +473,40 @@ class _secondpageState extends State<secondpage> {
     );
   }
 }
+
+
+
+
+Future<UserCredential> signInWithGoogle() async {
+  try {
+    // Trigger the authentication flow
+    final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
+
+    // Obtain the auth details from the request
+    final GoogleSignInAuthentication? googleAuth = await googleUser?.authentication;
+
+    // Create a new credential
+    final credential = GoogleAuthProvider.credential(
+      accessToken: googleAuth?.accessToken,
+      idToken: googleAuth?.idToken,
+    );
+
+    // Once signed in, return the UserCredential
+    final UserCredential userCredential = await FirebaseAuth.instance.signInWithCredential(credential);
+
+    // Store the user's name in SharedPreferences
+    await UserName(userCredential.user!.displayName);
+
+    return userCredential;
+  } catch (error) {
+    print(error);
+    throw error; // Handle errors as needed
+  }
+}
+
+Future<void> UserName(String? name) async {
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  prefs.setString('name', name!); // Store the user's name
+}
+
+//navigator se data pass

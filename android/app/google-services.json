@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "484496870615",
+    "project_id": "foodprocessorder",
+    "storage_bucket": "foodprocessorder.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:484496870615:android:9feecf5151292af4e77492",
+        "android_client_info": {
+          "package_name": "com.example.foodorderprocess"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "484496870615-e5vjrnltq48o3hi26t52q4p53popsjsl.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBPVR3wTGfa9_iKL0ssP8wLZufd2qjOJ7U"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "484496870615-e5vjrnltq48o3hi26t52q4p53popsjsl.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
